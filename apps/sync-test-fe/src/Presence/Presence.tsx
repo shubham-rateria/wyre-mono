@@ -84,13 +84,7 @@ export const Presence: React.FC = () => {
         {/* ts-ignore */}
         {presenceDetails.users.keys().map((userId: string) => {
           return (
-            <div
-              className={styles.Container}
-              style={{
-                top: presenceDetails.users[userId].mousePosition[0],
-                left: presenceDetails.users[userId].mousePosition[1],
-              }}
-            >
+            <div className={styles.Container}>
               <Cursor color={presenceDetails.users[userId].userColor} />
               <div
                 className={styles.Avatar}

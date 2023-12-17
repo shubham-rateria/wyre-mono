@@ -9,6 +9,7 @@ export interface IUserDetails {
   mouseState: MOUSE_STATE;
   name: string;
   userColor: string;
+  joinTime: number;
 }
 
 interface IPresenceInit {
@@ -17,6 +18,7 @@ interface IPresenceInit {
 
 interface IPresenceAdd {
   name: string;
+  joinTime?: number;
   color?: string;
 }
 
@@ -77,9 +79,10 @@ export const usePresence = () => {
       mousePosition: [window.screen.width / 2, window.screen.height / 2],
       mouseState: "up",
       userColor: params.color ?? getRandomColor(),
+      joinTime: params.joinTime || Date.now(),
     };
     // @ts-ignore
-    loadedData?.users.insert(id, myDetails);
+    loadedData?.users.insert(SyncManager._io.id, myDetails);
   };
 
   const init = async ({ presenceId }: IPresenceInit): Promise<IRoomData> => {
@@ -105,6 +108,7 @@ export const usePresence = () => {
     SyncManager.setupEventListener(
       "room:user:remove:" + presenceId,
       (data: any) => {
+        console.log("removing user", data);
         loadedData.users.delete(data.socketId);
         setValue((value) => value + 1);
       }
@@ -112,38 +116,38 @@ export const usePresence = () => {
 
     // setup listeners for my mouse position move
 
-    const setXY = lodash.debounce((x, y) => {
-      console.log("[mouse:pos:change]", x, y);
-      loadedData.users[id].mousePosition = [y, x];
-    }, 5);
+    // const setXY = lodash.debounce((x, y) => {
+    //   console.log("[mouse:pos:change]", x, y);
+    //   loadedData.users[id].mousePosition = [y, x];
+    // }, 5);
 
-    window.addEventListener("mousedown", (event) => {
-      loadedData.users[id].mouseState = "down";
-    });
+    // window.addEventListener("mousedown", (event) => {
+    //   loadedData.users[id].mouseState = "down";
+    // });
 
-    window.addEventListener("mouseup", (event) => {
-      loadedData.users[id].mouseState = "up";
-    });
+    // window.addEventListener("mouseup", (event) => {
+    //   loadedData.users[id].mouseState = "up";
+    // });
 
-    window.addEventListener("mousemove", (event) => {
-      if (loadedData.users[id].mouseState === "down") {
-        loadedData.users[id].mouseState = "dragging";
-      }
-      setXY(event.clientX, event.clientY);
-    });
+    // window.addEventListener("mousemove", (event) => {
+    //   if (loadedData.users[id].mouseState === "down") {
+    //     loadedData.users[id].mouseState = "dragging";
+    //   }
+    //   setXY(event.clientX, event.clientY);
+    // });
 
-    window.addEventListener("touchmove", (event) => {
-      if (loadedData.users[id].mouseState === "down") {
-        loadedData.users[id].mouseState = "dragging";
-      }
-      setXY(event.touches[0].clientX, event.touches[0].clientY);
-    });
-    window.addEventListener("touchstart", () => {
-      loadedData.users[id].mouseState = "down";
-    });
-    window.addEventListener("touchend", () => {
-      loadedData.users[id].mouseState = "up";
-    });
+    // window.addEventListener("touchmove", (event) => {
+    //   if (loadedData.users[id].mouseState === "down") {
+    //     loadedData.users[id].mouseState = "dragging";
+    //   }
+    //   setXY(event.touches[0].clientX, event.touches[0].clientY);
+    // });
+    // window.addEventListener("touchstart", () => {
+    //   loadedData.users[id].mouseState = "down";
+    // });
+    // window.addEventListener("touchend", () => {
+    //   loadedData.users[id].mouseState = "up";
+    // });
 
     setValue((value) => value + 1);
 
