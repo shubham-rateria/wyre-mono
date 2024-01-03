@@ -42,12 +42,17 @@ const getRandomColor = () => {
 let loadedData: any;
 let userName: string;
 
-export const usePresence = () => {
+type Props = {
+  onPresenceChange: () => void;
+};
+
+export const usePresence = ({ onPresenceChange }: Props) => {
   const [value, setValue] = useState(0);
   // const [loadedData, setLoadedData] = useState(null);
   const id = useMemo(() => (Math.random() + 1).toString(36).substring(7), []);
 
   const onChange = (patch: any) => {
+    onPresenceChange();
     setValue((value) => value + 1);
   };
 
