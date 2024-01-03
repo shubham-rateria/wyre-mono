@@ -43,7 +43,7 @@ let loadedData: any;
 let userName: string;
 
 type Props = {
-  onPresenceChange: () => void;
+  onPresenceChange?: () => void;
 };
 
 export const usePresence = ({ onPresenceChange }: Props) => {
@@ -52,7 +52,9 @@ export const usePresence = ({ onPresenceChange }: Props) => {
   const id = useMemo(() => (Math.random() + 1).toString(36).substring(7), []);
 
   const onChange = (patch: any) => {
-    onPresenceChange();
+    if (onPresenceChange) {
+      onPresenceChange();
+    }
     setValue((value) => value + 1);
   };
 
