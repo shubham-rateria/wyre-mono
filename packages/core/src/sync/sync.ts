@@ -49,7 +49,8 @@ export class _SyncManager {
   // socketEndpoint = "https://api-dev.wyre.live";
   // socketEndpoint = "http://localhost:3003";
   // socketEndpoint = "http://3.109.46.246:3002";
-  socketEndpoint = "http://18.61.175.195:3003";
+  // socketEndpoint = "http://18.61.175.195:3003";
+  socketEndpoint = "https://wyre.gclfancenter.com";
   socketConfig = {
     path: "/socket.io",
     transports: ["websocket"],
